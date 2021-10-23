@@ -1,0 +1,15 @@
+.spritesheet-container {
+    text-align: center;
+}
+
+.spritesheet {
+    background: url(../img/image.png) no-repeat;
+    width: 128px;
+    height: 128px;
+}
+
+.spritesheet2 {
+    background: url(../img/erweiterung_1.png) no-repeat;
+    width: 256px;
+    height: 256px;
+}
