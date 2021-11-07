@@ -9,6 +9,14 @@
     const MAX_ITERATIONS = 3; // MIN, MAX
     const WIDTH_DEG = 0.02;
 
+    const COLORS = [
+        [218 / 255, 169 / 255, 109 / 255, 1.0],
+        [178 / 255, 118 / 255, 60 / 255, 1.0],
+        [239 / 255, 197 / 255, 154 / 255, 1.0],
+        [116 / 255, 58 / 255, 16 / 255, 1.0],
+        [148 / 255, 115 / 255, 74 / 255, 1.0]
+    ];
+
 
     const CANVAS = document.getElementById('canvas');
     const GL_CONTEXT = canvas.getContext('experimental-webgl');
@@ -35,12 +43,15 @@
     var coordAttr = GL_CONTEXT.getAttribLocation(shader_program, "coordinates");
     GL_CONTEXT.enableVertexAttribArray(coordAttr);
 
+    var colorAttr = GL_CONTEXT.getAttribLocation(shader_program, "color");
+    GL_CONTEXT.enableVertexAttribArray(colorAttr);
+
     GL_CONTEXT.enable(GL_CONTEXT.DEPTH_TEST);
 
     /**
      * Draws two triangles which should look like a branch.
      */
-    function draw_branch(from, to, width_from, width_to, color) {
+    function draw_branch(from, to, width_from, width_to, color_a, color_b) {
 
         var slope = (to[1] - from[1]) / (to[0] - from[0]);
         var perpendicular_slope = -1 / slope;
@@ -75,15 +86,32 @@
             B[0], B[1]
         ];
 
+        var colors = [
+            color_a[0], color_a[1], color_a[2], color_a[3],
+            color_b[0], color_b[1], color_b[2], color_b[3],
+            color_a[0], color_a[1], color_a[2], color_a[3],
+
+            color_b[0], color_b[1], color_b[2], color_b[3],
+            color_a[0], color_a[1], color_a[2], color_a[3],
+            color_b[0], color_b[1], color_b[2], color_b[3]
+        ];
+
         var vertex_buffer = GL_CONTEXT.createBuffer();
         GL_CONTEXT.bindBuffer(GL_CONTEXT.ARRAY_BUFFER, vertex_buffer);
         GL_CONTEXT.bufferData(GL_CONTEXT.ARRAY_BUFFER, new Float32Array(vertices), GL_CONTEXT.STATIC_DRAW);
-            GL_CONTEXT.vertexAttribPointer(coordAttr, 2, GL_CONTEXT.FLOAT, false, 0, 0);
-            GL_CONTEXT.useProgram(shader_program);
-                GL_CONTEXT.drawArrays(GL_CONTEXT.TRIANGLES, 0, 3);
-                GL_CONTEXT.drawArrays(GL_CONTEXT.TRIANGLES, 3, 3);
-            GL_CONTEXT.useProgram(null);
+        GL_CONTEXT.vertexAttribPointer(coordAttr, 2, GL_CONTEXT.FLOAT, false, 0, 0);
         GL_CONTEXT.bindBuffer(GL_CONTEXT.ARRAY_BUFFER, null);
+
+        var color_buffer = GL_CONTEXT.createBuffer();
+        GL_CONTEXT.bindBuffer(GL_CONTEXT.ARRAY_BUFFER, color_buffer);
+        GL_CONTEXT.bufferData(GL_CONTEXT.ARRAY_BUFFER, new Float32Array(colors), GL_CONTEXT.STATIC_DRAW);
+        GL_CONTEXT.vertexAttribPointer(colorAttr, 4, GL_CONTEXT.FLOAT, false, 0, 0);
+        GL_CONTEXT.bindBuffer(GL_CONTEXT.ARRAY_BUFFER, null);
+
+        GL_CONTEXT.useProgram(shader_program);
+        GL_CONTEXT.drawArrays(GL_CONTEXT.TRIANGLES, 0, 3);
+        GL_CONTEXT.drawArrays(GL_CONTEXT.TRIANGLES, 3, 3);
+        GL_CONTEXT.useProgram(null);
     };
 
     function next_point(angle, distance) {
@@ -103,12 +131,12 @@
 
         var branches = RANDOM_INT(num_branches);
         for (var i = 0; i < branches; i++) {
-            
+
             var from = point;
             var next_angle = RANDOM(BRANCH_ANGLE) + current_angle;
             var next = next_point(next_angle, RANDOM(length));
             var to = [from[0] + next[0], from[1] + next[1]];
-            draw_branch(from, to, current_width, next_width, [1.0, 0.0, 0.0, 1.0]);
+            draw_branch(from, to, current_width, next_width, COLORS[RANDOM_INT([0, COLORS.length])], COLORS[RANDOM_INT([0, COLORS.length])]);
 
             render_branches(to, length, iteration, next_angle, next_width, next_num_branches);
         }
