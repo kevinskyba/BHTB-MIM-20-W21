@@ -1,0 +1,68 @@
+<!doctype html">
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>EACCC</title>
+    <meta name="author" content="Kevin Skyba">
+    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <section class="section">
+        <h1 class="title">EA CCC - Eine Simulation</h1>
+        <h2 class="subtitle">
+        </h2>
+        <div class="columns">
+            <div class="column">
+                <nav class="panel">
+                    <p class="panel-heading">
+                        1)
+                    </p>
+                    <article class="message">
+                        <div class="message-body">
+                            WASD = Kamera bewegen</br>
+                            <div class="slidecontainer">
+                                <p>N (Anzahl Kugeln, 0-100):</p>
+                                <input type="range" min="1" max="100" value="1" class="slider" id="Nslider">
+                                <p>R (Radius, 1-5%):</p>
+                                <input type="range" min="1" max="5" value="1" class="slider" id="Rslider">
+                                <p>K (Anteil erkrankte, 1-100% von N):</p>
+                                <input type="range" min="1" max="100" value="1" class="slider" id="Kslider">
+                                <p>Z (Heilrate, 1-5 Sekunden):</p>
+                                <input type="range" min="1" max="5" value="5" class="slider" id="Zslider">
+                            </div>
+                        </div>
+                    </article>
+                    <div class="box">
+                        <canvas id="canvas1"></canvas>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <section class="section">
+        <div class="content has-text-centered">
+            <p>
+                Als CSS Framework wurde <a href="https://bulma.io/documentation/elements/button/">Bulma</a> verwendet.
+            </br>
+                Matrix Klasse von <a href="https://glmatrix.net/">glmatrix.net</a>.
+            </p>
+        </div>
+    </section>
+    <script src="js/models/GVT_Src_vertexData_plane.js"></script>
+    <script src="js/models/GVT_Src_vertexData_sphere.js"></script>
+    <script src="js/models/GVT_Src_vertexData_torus.js"></script>
+
+    <script src="js/gl-matrix-min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/vertex_shader.js"></script>
+    <script src="js/fragment_shader.js"></script>
+    <script src="js/framework.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
