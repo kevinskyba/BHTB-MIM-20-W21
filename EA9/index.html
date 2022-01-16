@@ -1,0 +1,66 @@
+<!doctype html">
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>EA7</title>
+    <meta name="author" content="Kevin Skyba">
+    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <section class="section">
+        <h1 class="title">EA 9 - Torustextur</h1>
+        <h2 class="subtitle">
+        </h2>
+        <div class="columns">
+            <div class="column">
+                <nav class="panel">
+                    <p class="panel-heading">
+                        1,2,3)
+                    </p>
+                    <article class="message">
+                        <div class="message-body">
+                            WASD = Kamera bewegen</br>
+                            </br>
+                            Der Torus wurde mit einer selbst erstellten Textur in einen Rettungsring verwandelt.
+                            </br>
+                            Die prozedurale Textur ist ein Perlin Noise, welches dynamisch erstellt wird.
+                        </div>
+                    </article>
+                    <div class="box">
+                        <canvas id="canvas1"></canvas>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <canvas style="display: none;" id="canvas2"></canvas>
+    </section>
+    <section class="section">
+        <div class="content has-text-centered">
+            <p>
+                Als CSS Framework wurde <a href="https://bulma.io/documentation/elements/button/">Bulma</a> verwendet.
+            </br>
+                Matrix Klasse von <a href="https://glmatrix.net/">glmatrix.net</a>.
+            </br>
+                Perlin Noise Daten von <a href="https://github.com/joeiddon/perlin">https://github.com/joeiddon/perlin</a>.
+            </p>
+        </div>
+    </section>
+    <script src="js/models/GVT_Src_vertexData_plane.js"></script>
+    <script src="js/models/GVT_Src_vertexData_sphere.js"></script>
+    <script src="js/models/GVT_Src_vertexData_torus.js"></script>
+
+    <script src="js/perlin.js"></script>
+    <script src="js/gl-matrix-min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/vertex_shader.js"></script>
+    <script src="js/fragment_shader.js"></script>
+    <script src="js/framework.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
