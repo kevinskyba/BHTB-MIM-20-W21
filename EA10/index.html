@@ -1,0 +1,142 @@
+<!DOCTYPE html5>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>EA10</title>
+	<meta name="author" content="Kevin Skyba">
+	<link rel="stylesheet" href="css/bulma.css">
+	<link rel="stylesheet" href="css/style.css">
+
+	<script src="ext/gl-matrix.js"></script>
+	<script src="ext/papaparse.min.js"></script>
+
+	<script src="GVT_Src_vertexData_sphere.js"></script>
+
+
+	<!--NEW DIM-->
+	<script src="ext/tsne.js"></script>
+
+	<script src="GVT_Src_vertexData_sphere.js"></script>
+
+	<!--NEW DIM-->
+	<script src="DIM_Src_Data_tpl.js"></script>
+	<script src="DIM_Src_tpl.js"></script>
+
+	<script type="x-shader/x-vertex" id="vertexshader">
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+			uniform mat3 uNMatrix;
+
+			varying vec3 vNormal;
+
+			void main(){
+				// Calculte vertex position in eye coordinates. 
+				vec4 tPosition = uMVMatrix * vec4(aPosition, 1.0);
+				// Calculate projektion.
+				gl_Position = uPMatrix * tPosition;
+	
+				vec3 tNormal = normalize(uNMatrix * aNormal);
+				tNormal = uNMatrix * aNormal;
+				
+				vNormal = tNormal;
+			}
+		</script>
+	<script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+
+			varying vec3 vNormal;
+
+			// Material.
+			struct PhongMaterial {
+				vec3 ka;
+				vec3 kd;
+				vec3 ks;
+				float ke;
+			};
+			uniform PhongMaterial material;
+
+			// Ambient light.
+			uniform vec3 ambientLight;
+
+			vec3 camLight(vec3 n) {
+
+				vec3 ambient = material.ka * ambientLight;
+
+				vec3 s = vec3(0,0,1);
+				float sn = max( dot(s,n), 0.0);
+				vec3 diffuse = material.kd * sn;
+
+				return ambient + diffuse;
+			}
+
+			void main() {
+				vec3 vNormal = normalize(vNormal);
+				gl_FragColor = vec4(camLight(vNormal), 1.0);
+			}
+		</script>
+</head>
+
+<body onload="app.start()">
+	<section class="section">
+		<h1 class="title">EA 10 - Seeds Daten in 3D</h1>
+		<h2 class="subtitle">
+		</h2>
+		<div class="columns">
+			<div class="column">
+				<nav class="panel">
+					<p class="panel-heading">
+						1,2)
+					</p>
+					<article class="message">
+						<div class="message-body">
+							Steuerung gemäß NAV. </br>
+							</br>
+							Der gespeicherte Datensatz verwendet <b>Epsilon: 10, Perplexity: 30, Dim: 3</b> </br>
+							</br>
+							XZY = Rotation </br>
+							WASD = Translation </br>
+
+							OFP = Orthogonal / Frustum / Prespective </br>
+							C = Orbit </br>
+							H = Up / Down </br>
+							D = Distance to center </br>
+							V = FOVY </br>
+							B = Near Plane Dimension (Zoom)</br>
+
+							T = t-SNE Steps
+							<hr>
+							<span id="experiment"></span></br>
+							<span id="para"></span></br>
+							<span id="step"></span></br>
+						</div>
+					</article>
+
+					<div class="box">
+						<canvas id="canvas"></canvas>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<canvas style="display: none;" id="canvas2"></canvas>
+	</section>
+	<section class="section">
+		<div class="content has-text-centered">
+			<p>
+				Als CSS Framework wurde <a href="https://bulma.io/documentation/elements/button/">Bulma</a> verwendet.
+				</br>
+				Matrix Klasse von <a href="https://glmatrix.net/">glmatrix.net</a>.
+				</br>
+				Perlin Noise Daten von <a
+					href="https://github.com/joeiddon/perlin">https://github.com/joeiddon/perlin</a>.
+			</p>
+		</div>
+	</section>
+</body>
+
+</html>
